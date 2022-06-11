@@ -5,6 +5,12 @@ let username = null;
 
 const readCommand = () => {
   const rl = readline.createInterface(stdin, stdout);
+  rl.on('line', (input) => {
+    let command = input.toString();
+    if (command === '.exit' || command === 'exit') {
+      rl.close();
+    }
+  });
 
   rl.on('SIGINT', () => {
     rl.close();
