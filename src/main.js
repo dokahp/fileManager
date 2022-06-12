@@ -43,9 +43,29 @@ const readCommand = () => {
       rl.close();
     } else if (command === 'ls') {
       list(currPath);
-      
-    } else if (command === 'test') {
-      console.log('this is test command');
+    } else if (command.startsWith('os')) {
+      let [oscommand, arg] = command.split(' ');
+      switch (arg) {
+        case "--EOL":
+          stdout.write(os.EOL);
+          printCurrentCatalogue();
+          break;
+        case "--cpus":
+          let cpuInfo = os.cpus();
+          const arch = os.arch();
+          cpuInfo = cpuInfo.map(el => {
+            return {model: el.model, 
+              speed: arch === 'arm64'? el.speed / 10 + 'Ghz': el.speed / 1000 + 'Ghz'
+            };
+          })
+          console.table(cpuInfo)
+          printCurrentCatalogue();
+          break;
+        default:
+          stdout.write('Invalid command\n');
+          printCurrentCatalogue();
+          break;
+      }
     } else {
       console.log('Invalid input');
       printCurrentCatalogue();
