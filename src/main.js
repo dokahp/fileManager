@@ -28,6 +28,9 @@ const list = (folderPath) => {
   });
 };
 
+
+
+
 const printCurrentCatalogue = () => {
   stdout.write(`You are currently in ${currPath}\n`);
 };
@@ -43,6 +46,9 @@ const readCommand = () => {
       
     } else if (command === 'test') {
       console.log('this is test command');
+    } else {
+      console.log('Invalid input');
+      printCurrentCatalogue();
     };
   });
 
