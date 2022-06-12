@@ -4,6 +4,7 @@ import os from 'os';
 import fs from 'fs';
 import path from 'path';
 import { changeDir } from './changeDir.js';
+import { create } from './createEmptyFile.js';
 
 let username = null;
 export let currPath = os.homedir();
@@ -66,6 +67,10 @@ const readCommand = () => {
         const pathExists = await changeDir(path.join(currPath, probablyPath));
         currPath = pathExists? path.join(currPath, probablyPath): currPath;
       };
+      printCurrentCatalogue();
+    } else if (command.startsWith('add') && command.split(' ').length === 2) {
+      let filename = command.split(' ')[1];
+      create(currPath, filename);
       printCurrentCatalogue();
     } else if (command.startsWith('os')) {
       let [oscommand, arg] = command.split(' ');
