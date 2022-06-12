@@ -3,9 +3,10 @@ import readline from 'readline';
 import os from 'os';
 import fs from 'fs';
 import path from 'path';
+import { changeDir } from './changeDir.js';
 
 let username = null;
-let currPath = os.homedir();
+export let currPath = os.homedir();
 const rl = readline.createInterface(stdin, stdout);
 
 
@@ -56,6 +57,19 @@ const readCommand = () => {
       list(currPath);
     } else if (command === 'up') {
       upLevelPath();
+    } else if (command.startsWith('cd') && command.split(' ').length === 2) {
+      let probablyPath = command.split(' ')[1];
+      if (path.isAbsolute(probablyPath)) {
+        console.log('Path is absolute');
+        probablyPath = changeDir(probablyPath);
+        currPath = probablyPath? probablyPath: currPath;
+      } else {
+        console.log('path is relative');
+        let res = changeDir(path.join(currPath, probablyPath));
+        console.log(res);
+        // currPath = probablyPath? probablyPath: currPath;
+      };
+      printCurrentCatalogue();
     } else if (command.startsWith('os')) {
       let [oscommand, arg] = command.split(' ');
       switch (arg) {
