@@ -61,6 +61,10 @@ const readCommand = () => {
           console.table(cpuInfo)
           printCurrentCatalogue();
           break;
+        case "--homedir":
+          stdout.write(`Home dirrectory: ${os.homedir()}\n`);
+          printCurrentCatalogue();
+          break;
         default:
           stdout.write('Invalid command\n');
           printCurrentCatalogue();
