@@ -65,6 +65,11 @@ const readCommand = () => {
           stdout.write(`Home dirrectory: ${os.homedir()}\n`);
           printCurrentCatalogue();
           break;
+        case "--username":
+          const userInfo = os.userInfo();
+          stdout.write(`Username: ${userInfo.username}\n`)
+          printCurrentCatalogue();
+          break;
         default:
           stdout.write('Invalid command\n');
           printCurrentCatalogue();
