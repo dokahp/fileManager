@@ -49,7 +49,7 @@ const printCurrentCatalogue = () => {
 
 const readCommand = () => {
   printCurrentCatalogue();
-  rl.on('line', (input) => {
+  rl.on('line', async (input) => {
     let command = input.toString();
     if (command === '.exit' || command === 'exit') {
       rl.close();
@@ -60,14 +60,11 @@ const readCommand = () => {
     } else if (command.startsWith('cd') && command.split(' ').length === 2) {
       let probablyPath = command.split(' ')[1];
       if (path.isAbsolute(probablyPath)) {
-        console.log('Path is absolute');
-        probablyPath = changeDir(probablyPath);
+        const pathExists = await changeDir(probablyPath);
         currPath = probablyPath? probablyPath: currPath;
       } else {
-        console.log('path is relative');
-        let res = changeDir(path.join(currPath, probablyPath));
-        console.log(res);
-        // currPath = probablyPath? probablyPath: currPath;
+        const pathExists = await changeDir(path.join(currPath, probablyPath));
+        currPath = pathExists? path.join(currPath, probablyPath): currPath;
       };
       printCurrentCatalogue();
     } else if (command.startsWith('os')) {

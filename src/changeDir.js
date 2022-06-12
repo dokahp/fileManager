@@ -1,9 +1,11 @@
-import path from 'path';
-import fs from 'fs';
+import { stat } from 'fs/promises';
 import { stdout } from 'process';
 
-
 export const changeDir = async (yourPath) => {
-  let res = await fs.access(yourPath, () => console.log('Error'))
-  return res;
-};
+  try {
+    const isDir = (await stat(yourPath)).isDirectory();
+    return isDir;
+  } catch {
+    stdout.write('Operation failed\n');
+  }
+}
