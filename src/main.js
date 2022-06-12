@@ -28,7 +28,18 @@ const list = (folderPath) => {
   });
 };
 
-
+const upLevelPath = () => {
+  let probablyPath = currPath.split(path.sep).slice(0, -1).join(path.sep);
+  fs.access(probablyPath, (err) => {
+    if (err) {
+      stdout.write('Operation failed\n');
+      printCurrentCatalogue();
+    } else {
+      currPath = probablyPath;
+      printCurrentCatalogue();
+    };
+  });
+}
 
 
 const printCurrentCatalogue = () => {
@@ -43,6 +54,8 @@ const readCommand = () => {
       rl.close();
     } else if (command === 'ls') {
       list(currPath);
+    } else if (command === 'up') {
+      upLevelPath();
     } else if (command.startsWith('os')) {
       let [oscommand, arg] = command.split(' ');
       switch (arg) {
@@ -68,6 +81,10 @@ const readCommand = () => {
         case "--username":
           const userInfo = os.userInfo();
           stdout.write(`Username: ${userInfo.username}\n`)
+          printCurrentCatalogue();
+          break;
+        case "--architecture":
+          stdout.write(`CPU architecture: ${os.arch()}\n`);
           printCurrentCatalogue();
           break;
         default:
